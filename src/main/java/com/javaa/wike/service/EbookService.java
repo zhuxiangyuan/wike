@@ -7,6 +7,7 @@ import com.javaa.wike.req.EbookReq;
 import com.javaa.wike.resp.EbookResp;
 import com.javaa.wike.util.CopyUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -21,7 +22,10 @@ public class EbookService {
         EbookExample ebookExample=new EbookExample();
         EbookExample.Criteria criteria=ebookExample.createCriteria();
 
-        criteria.andNameLike("%"+ebookReq.getName()+"%");
+        if (!ObjectUtils.isEmpty(ebookReq.getName())){
+            criteria.andNameLike("%"+ebookReq.getName()+"%");
+        }
+
         List<Ebook> ebookList= ebookMapper.selectByExample(ebookExample);
 
         List<EbookResp> ebookRespList = CopyUtil.copyList(ebookList,EbookResp.class);
